@@ -983,38 +983,7 @@
         return page
     }
 
-    const isBrowser = typeof document !== "undefined"
-    if (isBrowser) {
-        window.__framer_importFromPackage = (packageAndFilename, exportIdentifier) => () => {
-            return React.createElement(Framer.ErrorPlaceholder, {
-                error: 'Package component not supported: "' + exportIdentifier + '" in "' + packageAndFilename + '"'
-            })
-        }
-        // A lot of libraries assume process.env.NODE_ENV is present in runtime/buildtime, so we are polyfilling it
-        window.process = {
-            ...window.process,
-            env: {
-                ...(window.process ? window.process.env : undefined),
-                NODE_ENV: "production"
-            }
-        }
-
-        window.__framer_events = window.__framer_events || []
-        // Fallback support for stack gaps
-        Framer.installFlexboxGapWorkaroundIfNeeded()
-
-        const container = document.getElementById("main")// We know that #main is parsed before this script, so we don't need to wait for DOMContentLoaded or similar events.
-        if ("framerHydrateV2" in container.dataset)
-            main(true, container)
-        else
-            main(false, container)
-    }
-
-    function track() {
-        if (!isBrowser)
-            return
-        window.__framer_events.push(arguments)
-    }
+   
 
     async function main(shouldHydrate, container) {
         try {
